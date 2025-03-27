@@ -43,7 +43,7 @@ This detector compares the data point to a local moving average to identify poin
 
 ![alt text](https://media.discordapp.net/attachments/1051835950902288435/1354638543951237151/Figure_2.png?ex=67e604f4&is=67e4b374&hm=d82b4a208efc94aa525cc5252389e051b4eaf31fed1a69572934db6ee9e94908&=&format=webp&quality=lossless&width=1610&height=858 "Moving Aveg Detector")
 
-- Z-Score Detector
+3. Z-Score Detector
 
 This detector uses a robust statistical approach based on median values instead of mean. This reduces the influence of extreme values and can be better suited for detecting more subtle anomalies in noisy data.
 
