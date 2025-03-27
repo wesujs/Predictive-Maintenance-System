@@ -109,7 +109,7 @@ This detector uses a robust statistical approach based on median values instead 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/predictive-maintenance.git
+git clone https://github.com/wesujs/predictive-maintenance.git
 cd predictive-maintenance
 
 # Set up Python environment
@@ -118,7 +118,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # Run the sensor data simulator
-python src/data_generation/simulator.py
+python test_anomaly_detection.py
 ```
 
 ## Project Roadmap
