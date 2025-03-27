@@ -109,16 +109,20 @@ This detector uses a robust statistical approach based on median values instead 
 
 ```bash
 # Clone the repository
-git clone https://github.com/wesujs/predictive-maintenance.git
-cd predictive-maintenance
+git clone https://github.com/wesujs/Predictive-Maintenance-System.git
+cd predictive-maintenance-system
+cd '.\Sen Dat Sim\'
 
-# Set up Python environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Windows Setup
 pip install -r requirements.txt
-
-# Run the sensor data simulator
+# Run the sensor data simulator 
 python test_anomaly_detection.py
+
+# MacOs Setup
+pip3 install -r requirements.txt
+# Run the sensor data simulator 
+python3 test_anomaly_detection.py
+
 ```
 
 ## Project Roadmap
