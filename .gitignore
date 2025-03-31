@@ -2,7 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+results/
+models/
+data/
+logs/
+runs/
+docker-compose.yml
 # C extensions
 *.so
 

@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
-from sensor_data_simulator import SensorDataSimulator
+from data_simulation.sensor_data_simulator import SensorDataSimulator
 
-# Definition of anomaly detection methods
+# Anomaly detection methods
 def threshold_detector(df, sensor_name, stddev_factor=3):
     """ Detect anomalies using a simple threshold based on standard deviation """
     mean = df[sensor_name].mean()
@@ -94,7 +94,7 @@ def add_anomaly_tracking(simulator):
             if np.random.random() < frequency:
                 simulator.anomaly_tracker.loc[i, f"{sensor_name}_anomaly"] = True
     
-    # Replace the methods with our tracked versions
+    # Replace the methods with tracked versions
     simulator.add_spike_anomaly = tracked_spike_anomaly
     simulator.add_drift_anomaly = tracked_drift_anomaly
     simulator.add_intermittent_anomaly = tracked_intermittent_anomaly
@@ -203,35 +203,26 @@ def run_anomaly_detection_test():
     # Set up anomaly tracking
     add_anomaly_tracking(simulator)
     
-    # Add specific anomalies
-    # Add a spike to temperature
     simulator.add_spike_anomaly('temperature', 0.3, duration_ratio=0.005, amplitude_factor=4.0)
-    
-    # Add a drift to pressure
     simulator.add_drift_anomaly('pressure', 0.5, 0.7, drift_factor=1.5)
-    
-    # Add intermittent anomalies to vibration
     simulator.add_intermittent_anomaly('vibration', 0.4, 0.5, frequency=0.3, amplitude_factor=3.0)
-    
-    # Add a second set of anomalies to test more complex patterns
     simulator.add_spike_anomaly('temperature', 0.7, duration_ratio=0.003, amplitude_factor=3.5)
     simulator.add_drift_anomaly('power_consumption', 0.6, 0.9, drift_factor=2.0)
     
-    # Different detection algorithms
+    # Detection algorithms
     
-    # 1. Simple threshold detector
+    # Simple threshold detector
     threshold_results = evaluate_detector(simulator, threshold_detector, "Threshold Detector", stddev_factor=3)
     
-    # 2. Moving average detector
+    # Moving average detector
     ma_results = evaluate_detector(simulator, moving_average_detector, "Moving Average Detector", window=60, threshold_factor=2.5)
     
-    # 3. Z-score detector
+    # Z-score detector
     z_results = evaluate_detector(simulator, z_score_detector, "Z-Score Detector", window=60, threshold=3.0)
     
     # Plot results for each sensor with each detector
     sensors = list(simulator.sensor_data.keys())
     
-    # Choose one sensor and one detector for visualization
     plot_detection_results(simulator, 'temperature', threshold_detector, "Threshold Detector", stddev_factor=3)
     plot_detection_results(simulator, 'pressure', moving_average_detector, "Moving Average Detector", window=60, threshold_factor=2.5)
     plot_detection_results(simulator, 'vibration', z_score_detector, "Z-Score Detector", window=60, threshold=3.0)

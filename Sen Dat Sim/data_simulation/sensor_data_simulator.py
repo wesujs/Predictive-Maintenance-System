@@ -244,20 +244,16 @@ class SensorDataSimulator:
         # Generate base signal
         signal = self.generate_base_signal(mean, amplitude, noise_level)
         
-        # Add daily cycle (temperature rises during day, falls at night)
+        # Add daily cycle
         signal = self.add_daily_pattern(signal, day_amplitude)
         
-        # Add weekly variation (e.g., less activity on weekends)
+        # Add weekly variation
         signal = self.add_weekly_pattern(signal, week_amplitude)
         
         # Store in the sensor data dictionary
         self.sensor_data['temperature'] = signal
 
-    def generate_vibration_data(self, 
-                               mean=0.5,            # 0.5g average
-                               amplitude=0.3,       # ±0.3g variation
-                               day_amplitude=0.2,   # Daily cycle
-                               noise_level=0.2):    # 20% noise (vibration is noisy)
+    def generate_vibration_data(self,mean=0.5,amplitude=0.3,day_amplitude=0.2,noise_level=0.2):
         """
         Generate realistic vibration sensor data.
         
@@ -281,11 +277,7 @@ class SensorDataSimulator:
         # Store in the sensor data dictionary
         self.sensor_data['vibration'] = signal
 
-    def generate_pressure_data(self, 
-                              mean=101.3,         # 101.3 kPa (atmospheric pressure)
-                              amplitude=1.0,      # ±1 kPa variation
-                              day_amplitude=0.2,  # Small daily cycle
-                              noise_level=0.03):  # 3% noise
+    def generate_pressure_data(self,mean=101.3,amplitude=1.0,day_amplitude=0.2,noise_level=0.03):
         """
         Generate realistic pressure sensor data.
         
@@ -309,12 +301,7 @@ class SensorDataSimulator:
         # Store in the sensor data dictionary
         self.sensor_data['pressure'] = signal
 
-    def generate_power_consumption_data(self, 
-                                      mean=75.0,          # 75 kW average
-                                      amplitude=25.0,     # ±25 kW variation
-                                      day_amplitude=20.0, # Strong daily cycle
-                                      week_amplitude=15.0,# Strong weekly cycle
-                                      noise_level=0.1):   # 10% noise
+    def generate_power_consumption_data(self, mean=75.0, amplitude=25.0, day_amplitude=20.0, week_amplitude=15.0, noise_level=0.1):
         """
         Generate realistic power consumption sensor data.
         
@@ -396,11 +383,7 @@ class SensorDataSimulator:
         # Update the sensor data
         self.sensor_data[sensor_name] = signal
 
-    def add_drift_anomaly(self, 
-                         sensor_name, 
-                         start_ratio, 
-                         end_ratio, 
-                         drift_factor=2.0):
+    def add_drift_anomaly(self, sensor_name, start_ratio, end_ratio, drift_factor=2.0):
         """
         Add a gradual drift anomaly to a sensor reading.
         
@@ -425,7 +408,7 @@ class SensorDataSimulator:
         start_idx = int(start_ratio * self.total_points)
         end_idx = int(end_ratio * self.total_points)
         
-        # Calculate drift duration
+
         drift_duration = end_idx - start_idx
         
         if drift_duration <= 0:
@@ -434,7 +417,7 @@ class SensorDataSimulator:
         # Determine the amplitude of the signal
         signal_amplitude = np.std(signal)
         
-        # Create the drift
+
         for i in range(start_idx, end_idx):
             # Calculate how far into the drift period we are (0 to 1)
             progress = (i - start_idx) / drift_duration
@@ -444,12 +427,7 @@ class SensorDataSimulator:
         # Update the sensor data
         self.sensor_data[sensor_name] = signal
 
-    def add_intermittent_anomaly(self, 
-                                sensor_name, 
-                                start_ratio, 
-                                end_ratio, 
-                                frequency=0.2, 
-                                amplitude_factor=2.0):
+    def add_intermittent_anomaly(self, sensor_name, start_ratio, end_ratio, frequency=0.2, amplitude_factor=2.0):
         """
         Add intermittent failures/spikes to a sensor reading.
         
@@ -690,16 +668,12 @@ if __name__ == "__main__":
     simulator.generate_all_sensor_data()
     
     # Add some specific anomalies
-    # 1. Add a temperature spike at around 40% of the time period
     simulator.add_spike_anomaly('temperature', 0.4, amplitude_factor=4.0)
     
-    # 2. Add a pressure drift starting at 60% and ending at 80% of the time period
     simulator.add_drift_anomaly('pressure', 0.6, 0.8, drift_factor=1.5)
     
-    # 3. Add intermittent anomalies to vibration between 30% and 40% of the time period
     simulator.add_intermittent_anomaly('vibration', 0.3, 0.4, frequency=0.3)
     
-    # 4. Add random anomalies to all sensors (3 per sensor by default)
     simulator.add_random_anomalies()
     
     # Plot the data to visualize the patterns and anomalies
@@ -708,9 +682,7 @@ if __name__ == "__main__":
     # Export the data to CSV
     simulator.to_csv('industrial_sensor_data.csv')
     
-    # Optional: Start a REST API to serve the data
-    # Uncomment the line below if Flask is installed
-    # simulator.create_api_endpoint()
+    simulator.create_api_endpoint()
     
     # Example of accessing the data programmatically
     df = simulator.to_dataframe()
